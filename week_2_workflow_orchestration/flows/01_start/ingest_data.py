@@ -1,5 +1,4 @@
-import os
-import argparse
+import wget
 from time import time
 import pandas as pd
 from sqlalchemy import create_engine
@@ -8,12 +7,8 @@ from sqlalchemy import create_engine
 def ingest_data(user, password, host, port, db, table_name, url):
     # the backup files are gzipped, and it's important to keep the correct extension
     # for pandas to be able to open the file.
-    if url.endswith('.csv.gz'):
-        csv_name = 'yellow_tripdata_2021-01.csv.gz'
-    else:
-        csv_name = 'output.csv'
 
-    os.system(f"wget {url} -O {csv_name}")
+    csv_name = wget.download(url)
     postgres_url = f'postgresql://{user}:{password}@{host}:{port}/{db}'
     engine = create_engine(postgres_url)
 
