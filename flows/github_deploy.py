@@ -7,7 +7,7 @@ github_block = GitHub. load("github-zoom")
 github_dep = Deployment.build_from_flow(
     flow=github_web_to_gcs,
     name="github-flow",
-    infrastructure=github_block,
+    storage=github_block,
 )
 
 
