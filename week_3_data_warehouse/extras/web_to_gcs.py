@@ -1,7 +1,8 @@
 import os
 import pandas as pd
 from google.cloud import storage
-import pyarrow
+
+
 """
 Pre-reqs: 
 1. `pip install pandas pyarrow google-cloud-storage`
@@ -35,6 +36,27 @@ table_schema_green = {
         'congestion_surcharge': 'float64'
 }
 
+table_schema_yellow = {
+        'VendorID': 'str',
+        'store_and_fwd_flag': 'str',
+        'RatecodeID': 'Int64',
+        'PULocationID': 'Int64',
+        'DOLocationID': 'Int64',
+        'passenger_count': 'Int64',
+        'trip_distance': 'float64',
+        'fare_amount': 'float64',
+        'extra': 'float64',
+        'mta_tax': 'float64',
+        'tip_amount': 'float64',
+        'tolls_amount': 'float64',
+        'ehail_fee': 'float64',
+        'improvement_surcharge': 'float64',
+        'total_amount': 'float64',
+        'payment_type': 'Int64',
+        'trip_type': 'Int64',
+        'congestion_surcharge': 'float64'
+}
+
 table_schema_fhv = {
     'dispatching_base_num': 'str',
     'PUlocationID': 'Int64',
@@ -46,6 +68,8 @@ table_schema_fhv = {
 
 date_cols_fhv = ['pickup_datetime', 'dropOff_datetime']
 date_cols_green = ['lpep_pickup_datetime', 'lpep_dropoff_datetime']
+date_cols_yellow = ['tpep_pickup_datetime', 'tpep_dropoff_datetime']
+
 
 
 def upload_to_gcs(bucket, object_name, local_file):
@@ -77,8 +101,8 @@ def web_to_gcs(year, service):
         # request_url = init_url + file_name
         # r = requests.get(request_url)
         # pd.DataFrame(io.StringIO(r.text)).to_csv(file_name)
-        df = pd.read_csv(dataset_url, dtype=table_schema_fhv,
-                         parse_dates=date_cols_fhv)
+        df = pd.read_csv(dataset_url, dtype=table_schema_yellow,
+                         parse_dates=date_cols_yellow)
         print(f"Fetched: {file_name}")
 
         # read it back into a parquet file
@@ -94,7 +118,7 @@ def web_to_gcs(year, service):
 
 #web_to_gcs('2019', 'green')
 #web_to_gcs('2020', 'green')
-# web_to_gcs('2019', 'yellow')
-# web_to_gcs('2020', 'yellow')
-web_to_gcs('2019', 'fhv')
+#web_to_gcs('2019', 'yellow')
+web_to_gcs('2020', 'yellow')
+# web_to_gcs('2019', 'fhv')
 

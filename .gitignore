@@ -19,3 +19,7 @@ serving_dir
 !week_6_stream_processing/avro_example/data/rides.csv
 de-camp/
 data/
+fhvhv/
+tmp/
+.ipynb_checkpoints/
+zones/
